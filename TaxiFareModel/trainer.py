@@ -1,10 +1,11 @@
 # imports
 from TaxiFareModel.data import get_data, clean_data
 from TaxiFareModel.encoders import TimeFeaturesEncoder, DistanceTransformer
+from TaxiFareModel.utils import compute_rmse
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 class Trainer():
     def __init__(self, X, y):
@@ -43,7 +44,7 @@ class Trainer():
 
     def run(self):
         """set and train the pipeline"""
-        self.set_pipiline()
+        self.set_pipeline()
         self.pipeline.fit(self.X, self.y)
 
     def evaluate(self, X_test, y_test):
@@ -54,10 +55,15 @@ class Trainer():
 
 
 if __name__ == "__main__":
-    # get data
-    # clean data
-    # set X and y
-    # hold out
-    # train
-    # evaluate
-    print('TODO')
+    N = 10_000
+    df = get_data(nrows=N)
+    df = clean_data(df)
+    X = df.drop("fare_amount", axis=1)
+    y = df["fare_amount"]
+    from sklearn.model_selection import train_test_split
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    trainer = Trainer(X_train, y_train)
+    trainer.run()
+    rmse = trainer.evaluate(X_test, y_test)
+    print(f"rmse: {rmse}")
