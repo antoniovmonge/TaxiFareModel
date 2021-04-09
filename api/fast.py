@@ -21,10 +21,10 @@ app.add_middleware(
 # define a root `/` endpoint
 @app.get("/")
 def index():
-    return {"ok": False}
+    return {"ok": True}
 
 
-@app.get("/predict_fare/")
+@app.get("/predict_fare")
 def create_fare(key,
                 pickup_datetime,
                 pickup_longitude,
@@ -64,3 +64,4 @@ def create_fare(key,
 
     return dict(
         prediction=pred)
+    

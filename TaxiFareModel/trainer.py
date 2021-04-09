@@ -124,7 +124,7 @@ if __name__ == "__main__":
     N = 10_000
     df = get_data(nrows=N)
     df = clean_data(df)
-    X = df.drop(["fare_amount", "Unnamed"], axis=1)
+    X = df.drop("fare_amount", axis=1)
     y = df["fare_amount"]
     from sklearn.model_selection import train_test_split
     
